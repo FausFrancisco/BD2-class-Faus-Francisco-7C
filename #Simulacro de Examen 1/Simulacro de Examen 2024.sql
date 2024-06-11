@@ -36,7 +36,7 @@ having Cantidad_de_Actores > (
 	) as subquery
 );
 
-#3. Generar un informe por empleado mostrando el local, la cantidad y sumatoria de sus 
+#3. Generar un informe por empleado mostrando el local, la cantidad y sumatoria de sus
 #ventas, su venta máxima, mínima, cuantas veces se repite la venta máxima y la
 #mínima, además mostrar en una columna una concatenación de todos los alquileres
 #mostrando el título de la película alquilada y el monto pagado. Considerar sólo los
@@ -49,24 +49,6 @@ select concat(s.first_name, ' ', s.last_name) as empleado,
     min(p.amount) as minima,
     lj1.cantidad_max,
     lj2.cantidad_min,
-#    (select count(*)
-#    from payment p2
-#    where p2.staff_id = s.staff_id and p2.amount = (
-#		select max(p3.amount) 
-#        from payment p3 
-#        where p3.staff_id = s.staff_id
-#        )
-#    ) as cantidad_max,
-    
-#    (select count(*)
-#    from payment p2
-#    where p2.staff_id = s.staff_id and p2.amount = (
-#		select min(p3.amount) 
-#        from payment p3
-#        where p3.staff_id = s.staff_id
-#        )
-#    ) as cantidad_min,
-    
     group_concat(concat(f.title, ' ', p.amount) separator ', ') as alquiler
 from staff s
 
