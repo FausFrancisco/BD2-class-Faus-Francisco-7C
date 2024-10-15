@@ -74,23 +74,23 @@ BEGIN
     #AN ITEM IS IN-STOCK IF THERE ARE EITHER NO ROWS IN THE rental TABLE
     #FOR THE ITEM OR ALL ROWS HAVE return_date POPULATED
 	
-    -- Determines if an inventory is available or rented
+    -- Determines if an inventory is available or rented.
     SELECT COUNT(*) INTO v_rentals
     FROM rental
     WHERE inventory_id = p_inventory_id;
 	
-    -- If there are no rental records for that inventory, it is in stock
+    -- If there are no rental records for that inventory, it is in stock.
     IF v_rentals = 0 THEN
       RETURN TRUE;
     END IF;
 
-	-- Check if the inventory is rented and has not been returned
+	-- Check if the inventory is rented and has not been returned.
     SELECT COUNT(rental_id) INTO v_out
     FROM inventory LEFT JOIN rental USING(inventory_id)
     WHERE inventory.inventory_id = p_inventory_id
     AND rental.return_date IS NULL;
 	
-    -- If rented (no return date), not in stock
+    -- If rented (no return date), not in stock.
     IF v_out > 0 THEN
       RETURN FALSE;
     ELSE
@@ -107,14 +107,14 @@ DELIMITER $$
 CREATE PROCEDURE film_in_stock(IN p_film_id INT, IN p_store_id INT, OUT p_film_count INT)
 READS SQL DATA
 BEGIN
-	-- Select the movie inventories in the specific store that are in stock
+	-- Select the movie inventories in the specific store that are in stock.
      SELECT inventory_id
      FROM inventory
      WHERE film_id = p_film_id
      AND store_id = p_store_id
      AND inventory_in_stock(inventory_id);
 	
-    -- Counts how many inventories of the movie in that store are in stock
+    -- Counts how many inventories of the movie in that store are in stock.
      SELECT COUNT(*)
      FROM inventory
      WHERE film_id = p_film_id
